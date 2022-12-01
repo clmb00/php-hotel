@@ -36,6 +36,8 @@
             'distance_to_center' => 50
         ],
     ];
+
+    $categories = array_keys($hotels[0]);
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +53,25 @@
 <body>
 
     <div class="container">
-      <h1>PHP Hotel</h1>
+      <h1 class="my-4">PHP Hotel</h1>
+      <table class="table table-primary table-striped table-hover table-bordered">
+        <thead>
+          <tr class="table-dark">
+            <?php foreach($categories as $category): ?>
+              <th scope="col"><?php echo strtoupper(str_replace('_', ' ', $category)) ?></th>
+            <?php endforeach; ?>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">
+          <?php foreach($hotels as $hotel): ?>
+            <tr>
+            <?php foreach($hotel as $key => $value): ?>
+              <?php echo ($key == 'name') ? ("<th scope='row'>" . $value . '</th>') : ('<td>' . $value . '</td>'); ?>
+            <?php endforeach; ?>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
     </div>
   
 </body>
