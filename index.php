@@ -39,8 +39,23 @@
 
     $categories = array_keys($hotels[0]);
 
-    if(isset($_GET['parking'])){
-      var_dump($_GET['parking']);
+    if(empty($_GET['rating']) && empty($_GET['distance']) && !isset($_GET['parking'])){
+      $filtered_hotels = $hotels;
+    } else {
+      $filtered_hotels = [];
+      foreach($hotels as $hotel){
+        $ok = True;
+        if(!empty($_GET['rating'])){
+          if ($hotel['vote'] < $_GET['rating']) $ok = False;
+        }
+        if(!empty($_GET['distance'])){
+          if ($hotel['distance_to_center'] > $_GET['distance']) $ok = False;
+        }
+        if(isset($_GET['parking'])){
+          if ($hotel['parking'] == false) $ok = False;
+        }
+        if($ok) $filtered_hotels[] = $hotel;
+      }
     }
 ?>
 
@@ -58,7 +73,6 @@
     }
     form{
       display: flex;
-      /* flex-wrap: wrap; */
       align-items: center;
     }
     .my_switch_container{
@@ -84,16 +98,16 @@
       <h4>Filter Hotels: </h4>
       <form action="./index.php" method="GET" class="mb-3">
         <div class="form-check-inline form-switch my_switch_container">
-          <input class="form-check-input" type="checkbox" role="switch" value="parking" id="flexSwitchCheckDefault">
+          <input class="form-check-input" type="checkbox" role="switch" name="parking" id="flexSwitchCheckDefault">
           <label class="form-check-label ms-2" for="flexSwitchCheckDefault">Parking space available</label>
         </div>
         <div class="input-group my_input_rating">
           <span class="input-group-text" id="basic-addon1">Minimum rating </span>
-          <input type="text" class="form-control" placeholder="1,2,3..." aria-label="Rating" aria-describedby="basic-addon1">
+          <input type="text" class="form-control" name="rating" placeholder="1,2,3..." aria-label="Rating" aria-describedby="basic-addon1">
         </div>
         <div class="input-group ms-3">
           <span class="input-group-text" id="basic-addon2">Minimum distance form the center </span>
-          <input type="text" class="form-control" placeholder="1,2,3..." aria-label="Rating" aria-describedby="basic-addon2">
+          <input type="text" class="form-control" name="distance" placeholder="1,2,3..." aria-label="Rating" aria-describedby="basic-addon2">
         </div>
         <div class="my_buttons_wrap ms-3">
           <button type="submit" class="btn btn-primary my_btn">Submit</button>
@@ -110,7 +124,7 @@
           </tr>
         </thead>
         <tbody class="table-group-divider">
-          <?php foreach($hotels as $hotel): ?>
+          <?php foreach($filtered_hotels as $hotel): ?>
             <tr>
             <?php foreach($hotel as $key => $value): ?>
               <?php echo ($key == 'name') ? ("<th scope='row'>" . $value . '</th>') : ('<td>' . $value . '</td>'); ?>
