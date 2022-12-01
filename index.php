@@ -38,6 +38,10 @@
     ];
 
     $categories = array_keys($hotels[0]);
+
+    if(isset($_GET['parking'])){
+      var_dump($_GET['parking']);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -48,12 +52,55 @@
 
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css' integrity='sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA==' crossorigin='anonymous'/>
 
+  <style>
+    .my_btn{
+      width: 90px;
+    }
+    form{
+      display: flex;
+      /* flex-wrap: wrap; */
+      align-items: center;
+    }
+    .my_switch_container{
+      flex-shrink: 0;
+      min-width: 220px;
+    }
+    .my_input_rating{
+      max-width: 280px;
+    }
+    .my_buttons_wrap{
+      flex-shrink: 0;
+    }
+  </style>
+
   <title>PHP Hotel</title>
 </head>
 <body>
 
     <div class="container">
+
       <h1 class="my-4">PHP Hotel</h1>
+
+      <h4>Filter Hotels: </h4>
+      <form action="./index.php" method="GET" class="mb-3">
+        <div class="form-check-inline form-switch my_switch_container">
+          <input class="form-check-input" type="checkbox" role="switch" value="parking" id="flexSwitchCheckDefault">
+          <label class="form-check-label ms-2" for="flexSwitchCheckDefault">Parking space available</label>
+        </div>
+        <div class="input-group my_input_rating">
+          <span class="input-group-text" id="basic-addon1">Minimum rating </span>
+          <input type="text" class="form-control" placeholder="1,2,3..." aria-label="Rating" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group ms-3">
+          <span class="input-group-text" id="basic-addon2">Minimum distance form the center </span>
+          <input type="text" class="form-control" placeholder="1,2,3..." aria-label="Rating" aria-describedby="basic-addon2">
+        </div>
+        <div class="my_buttons_wrap ms-3">
+          <button type="submit" class="btn btn-primary my_btn">Submit</button>
+          <button type="reset" class="btn btn-danger my_btn">Reset</button>
+        </div>
+      </form>
+
       <table class="table table-primary table-striped table-hover table-bordered">
         <thead>
           <tr class="table-dark">
