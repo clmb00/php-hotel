@@ -39,7 +39,7 @@
 
     $categories = array_keys($hotels[0]);
 
-    if(empty($_GET['rating']) && empty($_GET['distance']) && !isset($_GET['parking'])){
+    if(empty($_GET)){
       $filtered_hotels = $hotels;
     } else {
       $filtered_hotels = [];
@@ -126,9 +126,15 @@
         <tbody class="table-group-divider">
           <?php foreach($filtered_hotels as $hotel): ?>
             <tr>
-            <?php foreach($hotel as $key => $value): ?>
-              <?php echo ($key == 'name') ? ("<th scope='row'>" . $value . '</th>') : ('<td>' . $value . '</td>'); ?>
-            <?php endforeach; ?>
+            <?php foreach($hotel as $key => $value):
+                if(($key == 'name')){
+                  echo "<th scope='row'>" . $value . '</th>';
+                } elseif($key == 'parking'){
+                  echo "<td>" . ($value ? 'Si' : 'No') . '</td>';
+                } else{
+                  echo '<td>' . $value . '</td>';
+                }
+            endforeach; ?>
             </tr>
           <?php endforeach; ?>
         </tbody>
